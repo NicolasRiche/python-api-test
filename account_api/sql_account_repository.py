@@ -51,8 +51,8 @@ class SqlAccountRepository:
         try:
             self.cursor.execute("""INSERT INTO Accounts (name,email,phone_number,address,city,postal_code,country) 
                           VALUES (?,?,?,?,?,?,?)""",
-                      (account_params.name, account_params.email, account_params.phone_number,
-                       account_params.address, account_params.city, account_params.postal_code,
+                      (account_params.name, account_params.email.lower(), account_params.phone_number,
+                       account_params.address, account_params.city, account_params.postal_code.upper(),
                        account_params.country)
                       )
         except sqlite3.IntegrityError as err:
