@@ -75,7 +75,7 @@ class SqlAccountRepository:
     def find_by_id(self, id):
         """Return found Account or None"""
         c = self.sql_database.cursor()
-        c.execute("SELECT * FROM Accounts WHERE id=?", [id])
+        c.execute("SELECT * FROM Accounts WHERE account_id=?", [id])
         return self.__fetchone_account(c)
 
     def find_by_name(self, name):

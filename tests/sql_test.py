@@ -11,6 +11,11 @@ test_base_accounts_params = entities.AccountParams(
     address="1 Main St", city="Ottawa", postal_code="K1S0A8", country="Canada"
 )
 
+expected_db_account = entities.Account(
+    id=1, name="Nicolas", email="nicolas@domain.com", phone_number="611-611-6111",
+    address="1 Main St", city="Ottawa", postal_code="K1S0A8", country="Canada"
+)
+
 
 class SqlTest(unittest.TestCase):
     def test_cannot_add_invalid_account(self):
@@ -30,13 +35,8 @@ class SqlTest(unittest.TestCase):
 
     def test_can_add_valid_account(self):
         valid_account_params = test_base_accounts_params
-        self.assertEqual(sql.add(valid_account_params),
-                         # We expect that sql repo return us a valid Account object (not AccountParams)
-                         entities.Account(
-                             id=1, name="Nicolas", email="nicolas@domain.com", phone_number="611-611-6111",
-                             address="1 Main St", city="Ottawa", postal_code="K1S0A8", country="Canada"
-                         )
-                         )
+        # We expect that sql repo return us a valid Account object (not AccountParams)
+        self.assertEqual(sql.add(valid_account_params), expected_db_account)
 
     def test_cannot_add_existing_account(self):
         with self.assertRaisesRegex(ValueError, "An account with this name already exist in database"):
@@ -47,6 +47,11 @@ class SqlTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "An account with this email already exist in database"):
             already_exists_account_params = test_base_accounts_params._replace(name="ChangedNicolas")
             sql.add(already_exists_account_params)
+
+    def test_find_by_id(self):
+        # At this moment we should still have only one entry in db with account_id == 1
+        # We should be able to match it
+        self.assertEqual(sql.find_by_id(1), expected_db_account)
 
 
 if __name__ == '__main__':
