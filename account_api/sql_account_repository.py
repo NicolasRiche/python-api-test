@@ -72,26 +72,28 @@ class SqlAccountRepository:
         inserted_account = entities.Account._make([inserted_id] + list(account_params._asdict().values()))
         return inserted_account
 
+    def find_by_id(self, id):
+        """Return found Account or None"""
+        c = self.sql_database.cursor()
+        c.execute("SELECT * FROM Accounts WHERE id=?", [id])
+        return self.__fetchone_account(c)
+
     def find_by_name(self, name):
         """Return found Account or None"""
         c = self.sql_database.cursor()
         c.execute("SELECT * FROM Accounts WHERE name=?", [name])
-        fetch_result = c.fetchone()
-        if fetch_result is not None:
-            found_account = entities.Account._make(fetch_result)
-            # print('find_by_name {0} result {1}'.format(name, found_account))
-            return found_account
-        else:
-            return None
+        return self.__fetchone_account(c)
 
     def find_by_email(self, email):
         """Return found Account or None"""
         c = self.sql_database.cursor()
         c.execute("SELECT * FROM Accounts WHERE email=?", [email])
-        fetch_result = c.fetchone()
+        return self.__fetchone_account(c)
+
+    def __fetchone_account(self, sql_cursor):
+        fetch_result = sql_cursor.fetchone()
         if fetch_result is not None:
             found_account = entities.Account._make(fetch_result)
-            # print('find_by_email {0} result {1}'.format(email, found_account))
             return found_account
         else:
             return None
