@@ -84,7 +84,7 @@ class SqlAccountRepository:
 
     def find_by_name(self, name):
         """Return found Account or None"""
-        self.cursor.execute("SELECT * FROM Accounts WHERE name=?", [name])
+        self.cursor.execute("SELECT * FROM Accounts WHERE LOWER(name) = ?", [name.lower()])
         return self.__fetchone_account()
 
     def find_by_email(self, email):

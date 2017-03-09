@@ -60,7 +60,7 @@ def find_by_name():
     Find a account by its name (strict, name should match exactly)
     
     Params:
-      - [required] 'name' : the name you look for, /!\ name is case sensitive
+      - [required] 'name' : the name you look for
 
     Return:
       Success 

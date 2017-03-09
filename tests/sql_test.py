@@ -45,6 +45,11 @@ class SqlTest(unittest.TestCase):
             already_exists_account_params = test_base_accounts_params
             sql.add(already_exists_account_params)
 
+        print("-- Account name is not case sensitive --")
+        with self.assertRaisesRegex(ValueError, "An account with this name already exist in database"):
+            already_exists_account_params = test_base_accounts_params._replace(name="nicolas")
+            sql.add(already_exists_account_params)
+
         # Even if we change the name, email has to be unique too
         with self.assertRaisesRegex(ValueError, "An account with this email already exist in database"):
             already_exists_account_params = test_base_accounts_params._replace(name="ChangedNicolas")
