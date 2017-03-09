@@ -8,8 +8,8 @@ class SqlAccountRepository:
     def __init__(self, sql_database):
         self.sql_database = sql_database
         # if table doesn't exist create it
-        c = self.sql_database.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS "Accounts" (
+        self.cursor = self.sql_database.cursor()
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS "Accounts" (
         "account_id" INTEGER PRIMARY KEY NOT NULL UNIQUE , 
         "name" TEXT NOT NULL UNIQUE , "email" TEXT NOT NULL UNIQUE, 
         "phone_number" TEXT NOT NULL , 
@@ -48,9 +48,8 @@ class SqlAccountRepository:
             raise ValueError("An account with this email already exist in database")
 
         # input values are valid & account doesn't exist yet, we can insert it in DB
-        c = self.sql_database.cursor()
         try:
-            c.execute("""INSERT INTO Accounts (name,email,phone_number,address,city,postal_code,country) 
+            self.cursor.execute("""INSERT INTO Accounts (name,email,phone_number,address,city,postal_code,country) 
                           VALUES (?,?,?,?,?,?,?)""",
                       (account_params.name, account_params.email, account_params.phone_number,
                        account_params.address, account_params.city, account_params.postal_code,
@@ -68,30 +67,33 @@ class SqlAccountRepository:
 
         # print('sql result {0}'.format(r))
         self.sql_database.commit()
-        inserted_id = c.lastrowid
+        inserted_id = self.cursor.lastrowid
         inserted_account = entities.Account._make([inserted_id] + list(account_params._asdict().values()))
         return inserted_account
 
+    def all_accounts(self):
+        """Return list of Account"""
+        self.cursor.execute("SELECT * FROM Accounts")
+        accounts = [entities.Account._make(item) for item in self.cursor.fetchall()]
+        return accounts
+
     def find_by_id(self, id):
         """Return found Account or None"""
-        c = self.sql_database.cursor()
-        c.execute("SELECT * FROM Accounts WHERE account_id=?", [id])
-        return self.__fetchone_account(c)
+        self.cursor.execute("SELECT * FROM Accounts WHERE account_id=?", [id])
+        return self.__fetchone_account()
 
     def find_by_name(self, name):
         """Return found Account or None"""
-        c = self.sql_database.cursor()
-        c.execute("SELECT * FROM Accounts WHERE name=?", [name])
-        return self.__fetchone_account(c)
+        self.cursor.execute("SELECT * FROM Accounts WHERE name=?", [name])
+        return self.__fetchone_account()
 
     def find_by_email(self, email):
         """Return found Account or None"""
-        c = self.sql_database.cursor()
-        c.execute("SELECT * FROM Accounts WHERE email=?", [email])
-        return self.__fetchone_account(c)
+        self.cursor.execute("SELECT * FROM Accounts WHERE email=?", [email])
+        return self.__fetchone_account()
 
-    def __fetchone_account(self, sql_cursor):
-        fetch_result = sql_cursor.fetchone()
+    def __fetchone_account(self):
+        fetch_result = self.cursor.fetchone()
         if fetch_result is not None:
             found_account = entities.Account._make(fetch_result)
             return found_account
