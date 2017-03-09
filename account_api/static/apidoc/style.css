@@ -1,0 +1,42 @@
+
+h1 {
+    font-size: 1em;
+}
+
+h2 {
+    font-size: 1em;
+}
+
+h3 {
+    font-size: 1em;
+}
+
+p, body, pre {
+    font-size: 1em;
+}
+
+td {
+    padding-left:0px;
+    padding-right:40px;
+}
+
+td.inactive {
+    color : #999;
+}
+
+
+td.gettype {
+    color : #08088A;
+}
+
+td.posttype {
+    color : #088A08;
+}
+
+td.puttype {
+    color : #DF7401;
+}
+
+td.deletetype {
+    color : #B40404;
+}

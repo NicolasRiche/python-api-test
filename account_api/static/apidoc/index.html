@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>REST API Accounts documentation</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<style>
+    pre {
+        font-size:12px;
+    }
+</style>
+
+<h1>REST API Accounts documentation</h1>
+<h2>ChangeLog : Last update : 2017-03-06 16:00 UTC</h2>
+
+<p><a href="changelog.html">ChangeLog</a></p>
+
+<h2>Summary :</h2>
+
+<table><tbody>
+
+<tr><td><h3>---ACCOUNTS---</h3></td></tr>
+<tr><td>Account endpoints return account with this format </td><td><a href="accounts/account_obj_json.html">Json format of account obj</a></td></tr>
+<tr><td>--</td></tr>
+<tr>
+    <td class="gettype">GET</td>
+    <td>/accounts/:id</td>
+    <td><a href="accounts/get_account.html">details</a></td>
+    <td>Get a single account by its id</td>
+</tr>
+<tr>
+    <td class="gettype">GET</td>
+    <td>/accounts</td>
+    <td><a href="accounts/accounts.html">details</a></td>
+    <td>Get all accounts</td>
+</tr>
+<tr>
+    <td class="gettype">GET</td>
+    <td>/accounts/find_by_name?name=:name</td>
+    <td><a href="accounts/find_by_name.html">details</a></td>
+    <td>Find a single account by its name</td>
+</tr>
+<tr>
+    <td class="gettype">GET</td>
+    <td>/accounts/find_by_name?email=:email</td>
+    <td><a href="accounts/find_by_email.html">details</a></td>
+    <td>Find a single account by its email</td>
+</tr>
+<tr>
+    <td class="posttype">POST</td>
+    <td>/accounts/create</td>
+    <td><a href="accounts/create.html">details</a></td>
+    <td>Create an account</td>
+</tr>
+<tr>
+    <td class="posttype">POST</td>
+    <td>/accounts/create_check_parameters</td>
+    <td><a href="accounts/create_check_parameters.html">details</a></td>
+    <td>Check parameters when creating an account (For example to highlight error in create account form)</td>
+</tr>
+
+</table></tbody>
+
+</body>
+</html>

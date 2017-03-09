@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>REST API Accounts documentation > GET /accounts/create</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+<h1><a href="../index.html">REST API Accounts documentation</a> > GET /accounts/create</h1>
+
+<pre>
+    POST /accounts/create
+
+    Require Json input ( "content-type": "application/json" and Json in the HTTP body )
+    Example
+    {
+      "name": "NicolasLast",
+      "email": "nicolas@domain.com",
+      "phone_number": "611-611-6111",
+      "address": "1 Main St",
+      "city": "Ottawa",
+      "postal_code": "K1S0A8",
+      "country": "Canada"
+    }
+
+    Each field has some requirements (example name cannot be empty, email should be valid, etc)
+    You can call POST /account/create_check_parameters to check values and get eventual error(s) to fix
+    (For example to highlight error in create account form)
+
+    Return:
+     Success
+       Ok 200 Json { ... created account obj ... }
+
+     Failure
+       - BadRequest 400 "Expects a request content-type application/json"
+       - BadRequest 400 "Missing required '$key' field in json"  # with key can be name, email, ...
+       - BadRequest 400 "An account with this name already exist in database"
+       - BadRequest 400 "An account with this email already exist in database"
+
+    Call example with curl :
+
+    curl -i -X POST -H "Content-type: application/json" --data '{"name": "NicolasLast",
+    "email": "nicolas@domain.com", "phone_number": "611-611-6111", "address": "1 Main St",
+    "city": "Ottawa", "postal_code": "K1S0A8", "country": "Canada" }' "localhost:5000/accounts/create"
+</pre>
+</body>
+</html>

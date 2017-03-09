@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>REST API Accounts documentation > GET /accounts/find_by_email?email=:email</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+<h1><a href="../index.html">REST API Accounts documentation</a> > GET /accounts/find_by_email?email=:email</h1>
+
+<pre>
+    GET /accounts/find_by_email?email=:email
+
+    Find a account by its email (strict, email should match exactly)
+
+    Params:
+      - [required] 'email' : the email you look for
+
+    Return:
+      Success
+        Ok 200 Json [ {... account object ...} ] or [ ] if not found
+
+      Failure
+        - BadRequest 400 "Missing required 'email' url parameter"
+        - BadRequest 400 "'email' url parameter cannot be empty"
+</pre>
+</body>
+</html>

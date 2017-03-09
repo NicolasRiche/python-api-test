@@ -13,9 +13,15 @@ accounts_repo = sql_account_repository.SqlAccountRepository(conn)
 app.config["JSON_SORT_KEYS"] = False
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return """REST API <a href="/static/apidoc/index.html">API doc /static/apidoc/index.html</a>"""
+
 @app.route('/accounts/<int:id>', methods=['GET'])
 def get_account(id):
-    """GET /accounts/<int:id>
+    """GET /accounts/:id
+    
+    Get a single account by its id
     
     Return: 
       Success 
@@ -49,25 +55,23 @@ def all_accounts():
 
 @app.route('/accounts/find_by_name', methods=['GET'])
 def find_by_name():
-    """GET /accounts/find_by_name?name=<str:name>
+    """GET /accounts/find_by_name?name=:name
     
-    Find a account by his name (strict, name should match exactly)
+    Find a account by its name (strict, name should match exactly)
     
     Params:
       - [required] 'name' : the name you look for, /!\ name is case sensitive
 
     Return:
       Success 
-        Ok 200 Json [ ... list of accounts object ... ]
-        example [ { account1 }, { account2 } ] , if no result [ ]
+        Ok 200 Json [ {... account object ...} ] or [ ] if not found
         
       Failure
         - BadRequest 400 "Missing required 'name' url parameter"
         - BadRequest 400 "'name' url parameter cannot be empty"
-        - BadRequest 400 "'name' url parameter cannot be empty"
     
     """
-    name_query = request.args.get('name').strip()
+    name_query = request.args.get('name')
     if name_query is None:
         return "Missing required 'name' url parameter", 400
     if name_query.strip() == "":
@@ -85,24 +89,23 @@ def find_by_name():
 
 @app.route('/accounts/find_by_email', methods=['GET'])
 def find_by_email():
-    """GET /accounts/find_by_email?email=<str:email>
+    """GET /accounts/find_by_email?email=:email
     
-    Find a account by his email (strict, email should match exactly)
+    Find a account by its email (strict, email should match exactly)
     
     Params:
       - [required] 'email' : the email you look for
 
     Return:
       Success 
-        Ok 200 Json [ ... list of accounts object ... ]
-        example [ { account1 }, { account2 } ] , if no result [ ]
+        Ok 200 Json [ {... account object ...} ] or [ ] if not found
         
       Failure
         - BadRequest 400 "Missing required 'email' url parameter"
         - BadRequest 400 "'email' url parameter cannot be empty"
     
     """
-    email_query = request.args.get('email').strip()
+    email_query = request.args.get('email')
     if email_query is None:
         return "Missing required 'email' url parameter", 400
     if email_query.strip() == "":
@@ -136,7 +139,7 @@ def create_account():
     
     Each field has some requirements (example name cannot be empty, email should be valid, etc)
     You can call POST /account/create_check_parameters to check values and get eventual error(s) to fix
-
+    (For example to highlight error in create account form)
     
     Return:
      Success 
@@ -193,7 +196,7 @@ def create_check_parameters():
     
     Each field has some requirements (example name cannot be empty, email should be valid, etc)
     You can this endpoint to check values and get eventual error(s) to fix
-
+    (For example to highlight error in create account form)
     
     Return:
      Success 
